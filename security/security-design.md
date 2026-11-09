@@ -1,17 +1,21 @@
 # Security design
 
-My main principle was to **give each workload only the access it needs** and avoid credentials in source control.
+My goal was to avoid broad shared credentials and make each trust boundary testable.
 
-| Boundary | What I implemented or verified |
+| Area | Implemented approach |
 | --- | --- |
-| GitHub → Azure | OIDC-based login for deployment workflows rather than stored long-lived cloud login secrets |
-| Runtime → Azure | User-assigned managed identities with scoped permissions |
-| Secrets | Azure Key Vault with role-based access and network restrictions |
-| Container images | Security checks and immutable release references |
-| Public ingress | Cloudflare TLS edge; tested direct-origin denial for staging |
-| Database | Separate migration responsibilities and private staging access |
-| Terraform | Remote state and separate privileged/environment permissions |
+| CI/CD authentication | **GitHub Actions OIDC** to Azure instead of a long-lived cloud password in workflow code |
+| Azure workloads | Dedicated **user-assigned managed identities** and scoped permissions |
+| Application secrets | **Key Vault**, RBAC and restricted network access; no secret values managed as Terraform state resources |
+| Container supply chain | Quality/security scanning and release references pinned to immutable image digests |
+| Network ingress | Cloudflare proxy and strict TLS; Azure staging direct-origin access tested as denied |
+| Database | Restricted staging connectivity and separate migration responsibilities |
+| Terraform | Separate state/permissions and reviewed plans before controlled apply |
 
-For example, I tested that a workload's identity could access its intended secret and that an unrelated workload identity was denied access. These **negative tests** are useful because a successful role assignment alone doesn't prove least privilege.
+I validated access in both directions: an authorised identity was able to read its intended secret, while a different workload identity was denied. **That negative test matters more than merely seeing an RBAC role assignment in the portal.**
 
-**Public disclosure policy:** This repository contains no tokens, database URLs, IP allowlists, private endpoints, tenant/subscription IDs, Terraform state or copies of sensitive pipeline settings.
+## What is deliberately not published
+
+No passwords, tokens, connection strings, tenant/subscription IDs, IP allowlists, internal hostnames, production Terraform state, deployment variables or copies of private workflow settings.
+
+Security controls and the architecture evolve. This document describes the implemented staging design; it does not claim a completed independent production security certification.
