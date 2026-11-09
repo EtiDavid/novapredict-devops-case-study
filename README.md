@@ -6,7 +6,7 @@ NovaPredict is a live football prediction application.
 
 I work on its cloud infrastructure, containerisation, deployment pipelines, security and troubleshooting.
 
-**Try the application:** [NovaPredict Fantasy — Live Beta](https://beta.novapredictfantasy.win/register)
+**Try the application:** [NovaPredict Fantasy — Live Beta](https://beta.novapredictfantasy.win/)
 
 This is a **public technical case study**, not the application repository. **The application source code and operational infrastructure repositories are private.** Architecture and examples here are simplified to protect credentials and internal configuration.
 
@@ -17,6 +17,15 @@ This is a **public technical case study**, not the application repository. **The
 - **Release safety:** reviewed Terraform plans, separate deployment approval, health checks, staging smoke tests and revision rollback rehearsals.
 - **Security and operations:** OIDC, managed identities, Key Vault, least-privilege access, Cloudflare/TLS, Azure monitoring and incident investigation.
 - **Cost optimisation:** right-sized container resources, used backend scale-to-zero, stopped unused UAT capacity and kept the frontend warm for a better first-visit experience.
+
+## Quick reviewer path
+
+If you only have a few minutes, these pages show the parts of the project I think best represent how I work:
+
+1. [Architecture](architecture/architecture.md) — how the services fit together and why I separated them.
+2. [CI/CD](ci-cd/pipeline.md) — how I validate, publish, deploy and rehearse rollback.
+3. [Deployment incident](incidents/03-staging-deployment-fix-not-applied.md) — a real example of tracing a release problem to its source-version boundary.
+4. [Security design](security/security-design.md) — OIDC, managed identities, Key Vault and least-privilege access.
 
 ## Explore the case study
 
@@ -33,6 +42,25 @@ This is a **public technical case study**, not the application repository. **The
 | [Networking incident](incidents/02-wsl-azure-connectivity.md) | Windows/WSL Azure connectivity isolation |
 | [Deployment incident](incidents/03-staging-deployment-fix-not-applied.md) | Fixing a stale-script deployment workflow |
 
-**Environment scope:** The architecture below describes my **Azure staging** implementation. The public application has real users, but this portfolio does **not** claim that its final Azure production cutover is complete.
+## Related hands-on infrastructure experience
+
+NovaPredict is my cloud-focused project. Separately, I also run an enterprise-style home lab where I build and troubleshoot infrastructure directly.
+
+That environment includes:
+
+- **Proxmox VE and VMware** virtualization
+- **Linux and Windows Server**
+- **Ansible** configuration management and automation
+- **Active Directory, DNS and DHCP**
+- **pfSense**, VLAN segmentation and firewall rules
+- TCP/IP, routing, NAT and general network troubleshooting
+- Prometheus, Grafana, Loki and Alertmanager
+- PowerShell, Bash and Python for administration and automation
+
+I use the lab to practise the same habits I use on NovaPredict: make a change deliberately, validate the result, break things safely, recover them and document what I learned.
+
+This lab is separate from NovaPredict and is not presented here as production experience.
+
+**Environment scope:** The architecture documented in this repository describes my **Azure staging** implementation. The public application has real users, but this portfolio does **not** claim that its final Azure production cutover is complete.
 
 — **David Eti**
