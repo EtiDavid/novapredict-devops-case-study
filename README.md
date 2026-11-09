@@ -61,6 +61,6 @@ I use the lab to practise the same habits I use on NovaPredict: make a change de
 
 This lab is separate from NovaPredict and is not presented here as production experience.
 
-**Environment scope:** The architecture documented in this repository describes my **Azure staging** implementation. The public application has real users, but this portfolio does **not** claim that its final Azure production cutover is complete.
+**Environment scope:** The documented Azure environment is my **staging platform and currently serves the public beta**. It has real users, but I do **not** present it as a finished production architecture or claim that a final production cutover is complete.
 
 — **David Eti**
