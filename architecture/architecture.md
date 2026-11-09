@@ -17,6 +17,6 @@ I kept migrations out of API startup to control when schema changes occur. I kep
 
 ## What “production” means here
 
-I first proved the complete application locally with Docker Compose. I then built and tested the Azure **staging** platform in Belgium Central. The live public application has a separate deployment history. **The final Azure production environment/cutover is not represented as complete here.**
+I first proved the complete application locally with Docker Compose. I then built and tested the Azure **staging** platform in Belgium Central, which currently serves the public beta. The beta has real users, but I deliberately keep the environment labelled as staging while I continue improving it. **The final Azure production environment/cutover is not represented as complete here.**
 
 For security, the image omits IP ranges, private network routing, resource names, account IDs, credentials and operational endpoints.
