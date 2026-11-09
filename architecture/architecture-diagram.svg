@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+<title id="title">NovaPredict Azure staging architecture</title><desc id="desc">Cloudflare routes browsers to an Azure Container Apps frontend. The frontend routes requests to an internal backend. The backend and background worker use private PostgreSQL and managed Redis. A migration job runs separately. GitHub Actions publishes images to Azure Container Registry and manages reviewed staging deployments. Managed identities access Key Vault; workloads emit logs and telemetry.</desc>
+<defs><style>
+.t{font:700 25px Arial,sans-serif;fill:#15253d}.sub{font:15px Arial,sans-serif;fill:#53677e}.label{font:700 16px Arial,sans-serif;fill:#1e334b}.small{font:13px Arial,sans-serif;fill:#4a5c72}.box{fill:#fff;stroke:#a7b8ca;stroke-width:2;rx:12}.azure{fill:#eef6ff;stroke:#79a8d6;stroke-width:2;rx:18}.ci{fill:#f5efff;stroke:#a38cc8;stroke-width:2;rx:12}.sec{fill:#ecf9f2;stroke:#76b794;stroke-width:2;rx:12}.arr{fill:none;stroke:#607b98;stroke-width:2.5;marker-end:url(#arrow)}.dash{fill:none;stroke:#7b91a5;stroke-width:2;stroke-dasharray:6 5;marker-end:url(#arrow)}
+</style><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#607b98"/></marker></defs>
+<rect width="1200" height="760" fill="#f8fafc"/>
+<text x="45" y="52" class="t">NovaPredict — Azure staging architecture</text><text x="45" y="79" class="sub">Logical service flows, intentionally omitting private network and account details</text>
+<rect x="45" y="114" width="210" height="64" class="box"/><text x="150" y="140" class="label" text-anchor="middle">Browser users</text><text x="150" y="161" class="small" text-anchor="middle">HTTPS requests</text>
+<rect x="327" y="114" width="210" height="64" class="box"/><text x="432" y="140" class="label" text-anchor="middle">Cloudflare</text><text x="432" y="161" class="small" text-anchor="middle">DNS / proxy / TLS</text>
+<path d="M255 146H327" class="arr"/><path d="M537 146H635" class="arr"/>
+<rect x="622" y="99" width="531" height="493" class="azure"/><text x="646" y="131" class="label">Azure staging boundary</text>
+<rect x="667" y="160" width="210" height="70" class="box"/><text x="772" y="187" class="label" text-anchor="middle">Frontend / Nginx</text><text x="772" y="211" class="small" text-anchor="middle">Container App · public edge</text>
+<path d="M635 146H772V160" class="arr"/><rect x="913" y="160" width="206" height="70" class="box"/><text x="1016" y="187" class="label" text-anchor="middle">Backend API</text><text x="1016" y="211" class="small" text-anchor="middle">Internal ingress</text><path d="M877 195H913" class="arr"/>
+<rect x="667" y="287" width="210" height="70" class="box"/><text x="772" y="315" class="label" text-anchor="middle">Worker</text><text x="772" y="339" class="small" text-anchor="middle">Background processing</text>
+<rect x="913" y="287" width="206" height="70" class="box"/><text x="1016" y="315" class="label" text-anchor="middle">Migration job</text><text x="1016" y="339" class="small" text-anchor="middle">One-off schema updates</text>
+<rect x="667" y="414" width="210" height="70" class="box"/><text x="772" y="440" class="label" text-anchor="middle">PostgreSQL</text><text x="772" y="463" class="small" text-anchor="middle">Flexible Server</text>
+<rect x="913" y="414" width="206" height="70" class="box"/><text x="1016" y="440" class="label" text-anchor="middle">Upstash Redis</text><text x="1016" y="463" class="small" text-anchor="middle">Queues / cache</text>
+<path d="M1016 230V255H772V287" class="dash"/><path d="M1016 230V400H772V414" class="dash"/><path d="M772 357V414" class="arr"/><path d="M1016 357V397H772V414" class="arr"/><path d="M877 449H913" class="arr"/>
+<rect x="667" y="517" width="210" height="53" class="sec"/><text x="772" y="540" class="label" text-anchor="middle">Key Vault</text><text x="772" y="558" class="small" text-anchor="middle">Managed identity access</text>
+<rect x="913" y="517" width="206" height="53" class="sec"/><text x="1016" y="539" class="label" text-anchor="middle">Azure Monitor</text><text x="1016" y="558" class="small" text-anchor="middle">Logs / App Insights</text>
+<rect x="45" y="251" width="492" height="319" class="ci"/><text x="72" y="283" class="label">Source control &amp; release automation</text>
+<rect x="74" y="311" width="180" height="67" class="box"/><text x="164" y="338" class="label" text-anchor="middle">GitHub</text><text x="164" y="360" class="small" text-anchor="middle">PR / main / tags</text>
+<rect x="308" y="311" width="193" height="67" class="box"/><text x="404" y="338" class="label" text-anchor="middle">GitHub Actions</text><text x="404" y="360" class="small" text-anchor="middle">CI / release / plan</text>
+<path d="M254 344H308" class="arr"/>
+<rect x="74" y="426" width="180" height="70" class="box"/><text x="164" y="453" class="label" text-anchor="middle">Image registry</text><text x="164" y="476" class="small" text-anchor="middle">Azure Container Registry</text>
+<rect x="308" y="426" width="193" height="70" class="box"/><text x="404" y="453" class="label" text-anchor="middle">Reviewed deploy</text><text x="404" y="476" class="small" text-anchor="middle">Terraform saved plan</text>
+<path d="M404 378V426" class="arr"/><path d="M308 459H254" class="arr"/><path d="M501 459H614V195H667" class="dash"/><path d="M254 459H601V310H667" class="dash"/>
+<text x="45" y="633" class="label">Legend</text><path d="M45 661H111" class="arr"/><text x="123" y="666" class="small">Request / dependency path</text><path d="M360 661H426" class="dash"/><text x="438" y="666" class="small">Deployment or logical integration</text>
+<text x="45" y="707" class="sub">Simplified case-study view · not an operational network map · Azure final production cutover not implied</text>
+</svg>
