@@ -1,32 +1,32 @@
-# NovaPredict Fantasy — DevOps Case Study
+# NovaPredict Fantasy — DevOps case study
 
 **Azure · Terraform · Docker · GitHub Actions · PostgreSQL · Redis**
 
-NovaPredict Fantasy is a football prediction application where players predict match results, earn points and compete in leagues. I work on its infrastructure, container builds, deployment automation, security and troubleshooting.
+NovaPredict is a live football prediction application. I work on its cloud infrastructure, containerisation, deployment pipelines, security and troubleshooting.
 
-This repository is a short technical case study of work I carried out while building and operating its deployment platform. **The application source and operational infrastructure repositories remain private.** No production configuration or credentials are shared here.
+This is a **public technical case study**, not the application repository. **The application source code and operational infrastructure repositories are private.** Architecture and examples here are simplified to protect credentials and internal configuration.
 
-## What I worked on
+## What I built and managed
 
-- Built a Terraform-managed **Azure staging platform**, with networking, container workloads and managed services.
-- Containerised the frontend, API, background worker and one-off database migration workload.
-- Set up GitHub Actions quality/security checks, image publication and controlled staging deployments.
-- Implemented managed identities, Key Vault access controls and Cloudflare-to-Azure TLS restrictions.
-- Investigated failures using logs, HTTP checks, Azure CLI, Git and database validation—not just successful deployment statuses.
+- **Infrastructure:** Terraform-managed Azure staging, networking, Container Apps, PostgreSQL Flexible Server and Upstash Redis.
+- **Containers and delivery:** Docker images for frontend, API, worker and migrations; GitHub Actions tests, security checks and Azure Container Registry publication.
+- **Release safety:** reviewed Terraform plans, separate deployment approval, health checks, staging smoke tests and revision rollback rehearsals.
+- **Security and operations:** OIDC, managed identities, Key Vault, least-privilege access, Cloudflare/TLS, Azure monitoring and incident investigation.
 
-## Explore the work
+## Explore the case study
 
-| Topic | What's inside |
+| Area | What it shows |
 | --- | --- |
-| [Architecture](architecture/architecture.md) | Components and how they connect |
-| [CI/CD](ci-cd/pipeline.md) | Build, review, deployment and rollback |
-| [Terraform](infrastructure/infrastructure.md) | Infrastructure structure and a sanitized example |
-| [Security](security/security-design.md) | Identities, secrets and ingress boundaries |
-| [Monitoring](monitoring/monitoring.md) | Health checks and troubleshooting signals |
-| [Incidents](incidents/01-wrong-database-backup.md) | A real backup validation failure |
-| [Networking investigation](incidents/02-wsl-azure-connectivity.md) | Isolating a Windows/WSL connectivity problem |
-| [Engineering decisions](decisions/engineering-decisions.md) | Trade-offs and what I learned |
+| [Architecture](architecture/architecture.md) | Service diagram, traffic flows and environment scope |
+| [CI/CD](ci-cd/pipeline.md) | Tests, artifact publication, plan/apply and revision rollback |
+| [Infrastructure](infrastructure/infrastructure.md) | Terraform approach and a [sanitized example](infrastructure/examples/managed-identity.tf) |
+| [Security](security/security-design.md) | Identity, secret and network boundaries |
+| [Monitoring](monitoring/monitoring.md) | Logs, health checks and troubleshooting |
+| [Engineering decisions](decisions/engineering-decisions.md) | Why I made key design choices |
+| [Backup incident](incidents/01-wrong-database-backup.md) | A valid backup from the wrong database |
+| [Networking incident](incidents/02-wsl-azure-connectivity.md) | Windows/WSL Azure connectivity isolation |
+| [Deployment incident](incidents/03-staging-deployment-fix-not-applied.md) | Fixing a stale-script deployment workflow |
 
-**Scope note:** The documented Azure environment is **staging**. The public-facing application and the Azure deployment programme must not be confused with a claim that all application traffic is already served by the final Azure production architecture.
+**Environment scope:** The architecture below describes my **Azure staging** implementation. The public application has real users, but this portfolio does **not** claim that its final Azure production cutover is complete.
 
 — **David Eti**
