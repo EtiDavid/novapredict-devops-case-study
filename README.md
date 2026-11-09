@@ -2,7 +2,9 @@
 
 **Azure · Terraform · Docker · GitHub Actions · PostgreSQL · Redis**
 
-NovaPredict is a live football prediction application. I work on its cloud infrastructure, containerisation, deployment pipelines, security and troubleshooting.
+NovaPredict is a live football prediction application.
+
+**Try the application:** [NovaPredict Fantasy — Live Beta](https://beta.novapredictfantasy.win/register) I work on its cloud infrastructure, containerisation, deployment pipelines, security and troubleshooting.
 
 This is a **public technical case study**, not the application repository. **The application source code and operational infrastructure repositories are private.** Architecture and examples here are simplified to protect credentials and internal configuration.
 
