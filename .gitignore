@@ -1,6 +1,26 @@
-.idea
-env
-.env
-# JetBrains IDE
+# Local IDE and environment files
 .idea/
 *.iml
+.env
+.env.*
+!.env.example
+
+# Terraform state / plans / credentials
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.tfplan.*
+*.tfvars
+*.tfvars.json
+.terraform/
+.terraform.lock.hcl
+
+# Sensitive files and local scratch
+*.pem
+*.key
+*.pfx
+*.p12
+*.kubeconfig
+*.log
+.DS_Store
+*.Identifier
