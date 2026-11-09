@@ -1,12 +1,14 @@
-# Engineering decisions
+# Engineering decisions and trade-offs
 
-| Decision | Why it mattered | Trade-off / lesson |
+| Decision | Why I made it | Trade-off / limitation |
 | --- | --- | --- |
-| Build and test locally before Azure | Validated application/container contracts without consuming cloud resources | Local proof does not replace cloud validation |
-| Keep database migrations separate | Prevent schema changes from running implicitly during every API start | Release ordering and schema compatibility need deliberate checks |
-| Prefer managed identities and OIDC | Avoid long-lived cloud credentials in workloads and CI | RBAC and trust configuration need explicit positive/negative tests |
-| Use immutable image identifiers | Know exactly which image a revision runs | Requires release metadata and disciplined publication |
-| Separate Terraform plan from apply | A human can inspect the exact change before authorising it | Slower than automatic apply, but safer for staging infrastructure changes |
-| Validate recovery rather than just backup commands | Catch wrong-source backups and incomplete restoration | Adds testing effort, but avoids false confidence |
+| Test with local Docker Compose first | Find container, migration, service-network and health issues before paying for cloud resources | Local tests cannot prove Azure networking and managed-service behaviour |
+| Separate backend, worker and migration | Different runtimes have different access and deployment needs | More release coordination and health checks |
+| Use managed identity, OIDC and Key Vault | Limit long-lived credentials in workloads and CI | Requires deliberate RBAC and network testing, including denied-access tests |
+| Publish immutable container digests | Deploy and roll back a known image, not a mutable tag | Coordinated four-image release metadata is needed |
+| Plan first, apply with a separate human action | Review the exact infrastructure change and block destructive diffs | Slower than unattended deployment |
+| Keep rollback revisions in staging | Check new code at zero traffic before promotion | Not a substitute for backward-compatible database migrations |
+| Run independent drift checks | Detect out-of-band Azure changes between application releases | A detected drift still needs human investigation |
+| Validate backup *content* and source | A valid backup from the wrong database gives false confidence | Restore testing adds operational effort |
 
-The common approach is simple: **understand what a control is supposed to prove, test it independently, and document the limitations of the evidence.**
+My working rule is: **observe the failure, narrow the cause, make the smallest justified change, and repeat the failing test**. If the evidence identifies a failure domain but not a precise root cause, I document that limitation.
