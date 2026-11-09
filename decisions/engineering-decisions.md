@@ -9,6 +9,8 @@
 | Plan first, apply with a separate human action | Review the exact infrastructure change and block destructive diffs | Slower than unattended deployment |
 | Keep rollback revisions in staging | Check new code at zero traffic before promotion | Not a substitute for backward-compatible database migrations |
 | Run independent drift checks | Detect out-of-band Azure changes between application releases | A detected drift still needs human investigation |
+| Scale backend to zero and right-size from live metrics | Reduce idle compute cost without removing the public API | Cold starts; use a longer cooldown and monitor latency |
+| Keep the frontend warm; stop unused UAT | Spend modestly on first-page responsiveness, remove invisible idle waste | `min_replicas = 0` does not guarantee that every app is actually stopped; verify live replicas and billing |
 | Validate backup *content* and source | A valid backup from the wrong database gives false confidence | Restore testing adds operational effort |
 
 My working rule is: **observe the failure, narrow the cause, make the smallest justified change, and repeat the failing test**. If the evidence identifies a failure domain but not a precise root cause, I document that limitation.
