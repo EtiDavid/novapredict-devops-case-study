@@ -1,38 +1,22 @@
 # Architecture
 
-NovaPredict has four application workloads: **frontend**, **backend API**, **background worker**, and a **one-off migration job**. A PostgreSQL database stores application data; Redis supports background processing. I designed and tested the Azure staging platform before promoting the deployment model toward production.
+![NovaPredict Azure staging architecture](architecture-diagram.svg)
 
-```mermaid
-flowchart TB
-  User[Users / browser] --> CF[Cloudflare DNS + TLS proxy]
-  CF --> FE[Azure Container Apps: frontend / Nginx]
-  FE --> API[Azure Container Apps: backend API — internal ingress]
-  API --> PG[Azure Database for PostgreSQL Flexible Server]
-  API --> REDIS[Upstash Redis / queues]
-  W[Azure Container Apps: worker — no public ingress] --> PG
-  W --> REDIS
-  M[Container Apps migration job] --> PG
-  KV[Azure Key Vault] -. managed-identity secret access .-> API
-  KV -. managed-identity secret access .-> W
-  KV -. managed-identity secret access .-> M
-  ACR[Azure Container Registry] -. images .-> FE
-  ACR -. images .-> API
-  ACR -. images .-> W
-  ACR -. images .-> M
-  FE -. telemetry .-> OBS[Log Analytics / Application Insights]
-  API -. telemetry .-> OBS
-  W -. telemetry .-> OBS
-```
+NovaPredict has a frontend, backend API, background worker and separate one-shot database migration job. The diagrams show **logical integration**, not deployable network configuration.
 
-## Why these boundaries matter
+## How requests and jobs flow
 
-- **Only the frontend needs public ingress.** The backend is called through the approved frontend route; the worker has no public HTTP endpoint.
-- **The migration job is separate from the API.** Database schema changes run as an explicit release step, not on every web-process startup.
-- **Workloads use managed identities and scoped permissions** for Azure services instead of sharing an administrator credential.
-- **Cloudflare provides the public DNS/TLS edge.** Staging validation checked both successful public HTTPS and rejection of direct-origin bypass.
+- A user's HTTPS request passes through **Cloudflare** to the **frontend/Nginx Container App**. Frontend requests reach the **internal backend API**; the backend is not exposed as a separate public API.
+- The backend uses **Azure Database for PostgreSQL Flexible Server** and **Upstash Redis**. The worker processes asynchronous jobs using the same supporting services. A dedicated migration job applies schema changes ahead of a release.
+- Container images are built and published to **Azure Container Registry**, then deployed by controlled release workflows.
+- **Managed identities** limit access to Azure services such as Key Vault. **Log Analytics and Application Insights** provide operational visibility.
 
-The diagram intentionally shows **logical application flows**, not exact subnets, resource IDs, IP addresses or a complete network/security topology. Those details are excluded from the public portfolio.
+## Why I separated these components
 
-## Environment distinction
+I kept migrations out of API startup to control when schema changes occur. I kept backend traffic internal and avoided public worker access to reduce the external attack surface. I used managed services so the project could focus on application operations without administering every database host.
 
-Local Docker Compose was used for production-style functional simulation. Azure staging was provisioned and tested separately. The public application has had a distinct deployment path; the complete final Azure production cutover is **not claimed here**.
+## What “production” means here
+
+I first proved the complete application locally with Docker Compose. I then built and tested the Azure **staging** platform in Belgium Central. The live public application has a separate deployment history. **The final Azure production environment/cutover is not represented as complete here.**
+
+For security, the image omits IP ranges, private network routing, resource names, account IDs, credentials and operational endpoints.
